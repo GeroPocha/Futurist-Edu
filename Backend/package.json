@@ -1,0 +1,21 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "start": "func start",
+        "test": "jest"
+    },
+    "dependencies": {
+        "@azure/ai-form-recognizer": "^5.0.0",
+        "@azure/identity": "^4.0.0",
+        "azure-functions-core-tools": "^3.0.0",
+        "busboy": "^1.6.0",
+        "mssql": "^6.2.0",
+        "multer": "^1.4.5-lts.1",
+        "openai": "^4.17.4"
+    },
+    "devDependencies": {
+        "jest": "^29.7.0"
+    }
+}

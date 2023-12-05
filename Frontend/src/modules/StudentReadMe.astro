@@ -1,0 +1,82 @@
+---
+let studentName = '...';
+---
+
+<div
+	class="bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 text-slate-800 dark:text-slate-100 mb-20 p-4 lg:p-16 shadow-xl shadow-slate-200 dark:shadow-slate-900"
+>
+	<header
+		class="p-8 flex justify-center items-center flex-wrap flex-col w-full mt-16"
+	>
+	<div class="flex justify-center w-full ">
+		<img src='/static/images/felogo_rework.png' alt="FE Logo" class="w-48 h-48 hidden dark:block" />
+		<img src='/static/images/felogo_rework.png' alt="FE Logo" class="w-48 h-48 invert  dark:hidden" />
+
+	  </div>
+
+		<div class="format dark:format-invert lg:format-lg mt-32">
+			<p class="text-4xl lg:text-8xl dark:text-slate-200 text-slate-600 leading-tight text-center">
+				Welcome, <a
+					id="studentName"
+					class="font-bold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-violet-800 dark:from-emerald-500 dark:to-purple-700 no-underline animate-pulse"
+					>{studentName}</a>
+				<br />
+			</p>
+
+			<div class="format dark:format-invert lg:format-lg mt-32">
+				<p class="text-xl lg:text-xl dark:text-slate-200 text-slate-600 leading-tight text-center">
+					Dive into a world where AI meets your study goals. Our smart flashcards are tailor-made just for you and your classmates,
+				  turning every study session into a journey of discovery. Unlock your potential, embrace the challenge,
+				  and let's make learning an adventure you'll love. Your path to mastery starts here - one flashcard at a time! <br><br>
+					Where <a
+						rel="noopener nofollow"
+						class="font-bold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-violet-800 dark:from-emerald-500 dark:to-purple-700 no-underline"
+						>Teaching</a>
+						Meets
+						<a
+						rel="noopener nofollow"
+						class="font-bold text-transparent bg-clip-text bg-gradient-to-br from-pink-400 to-violet-800 dark:from-emerald-500 dark:to-purple-700 no-underline"
+						>Technology</a>
+						– Together, we're shaping the future of learning.
+
+				</p>
+		
+			<div class="flex justify-center space-x-5 w-full">
+				<a
+					href="/student/CourseSelector"
+					type="button"
+					class="text-blue-800 hover:text-white border hover:bg-gradient-to-r from-pink-400 to-violet-800 dark:from-emerald-500 dark:to-purple-700 border-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-100 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+					>Go to your Courses</a>
+					
+			</div>
+		</div>
+	</header>
+</div>
+
+<script>
+	import { fetchStudentName } from './StudentReadMe.client'; 
+	
+	if (typeof window !== 'undefined') {
+		fetchStudentName(26).then(name => { // Currently Hardcoded, as Login is not yet enabled
+			const teacherNameElement = document.getElementById('studentName');
+			if (teacherNameElement) {
+				teacherNameElement.textContent = name;
+				teacherNameElement.classList.remove('animate-pulse');
+			}
+		});
+	}
+	</script>
+
+<style>
+	/* Override in Markdown H1 title */
+	.readme :global(h1:nth-of-type(2)) {
+		display: none;
+	}
+
+	.svg-inline :global(svg) {
+		height: 100%;
+		width: 100%;
+	}
+	
+</style>
+

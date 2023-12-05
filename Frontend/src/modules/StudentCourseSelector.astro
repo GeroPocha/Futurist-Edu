@@ -1,0 +1,27 @@
+---
+import { fetchStudentCourses } from './StudentCourseSelector.client';
+
+let courses = [];
+
+try {
+    courses = await fetchStudentCourses(26);
+} catch (error) {
+    console.error("Error while accessing courses:", error);
+}
+---
+<div class="w-full flex flex-col items-center justify-center px-6 pt-8 mx-auto pt:mt-0 dark:bg-gray-900">
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
+    {courses.map((course) => (
+      <div class="relative group max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:bg-gradient-to-r from-pink-400 to-violet-800 dark:from-emerald-500 dark:to-purple-700">
+        <a href={`./course/${course.CourseID}`} class="absolute inset-0 z-10" aria-label={`Go to course: ${course.Name}`}></a>
+        <svg class="w-6 h-6 text-gray-800 dark:text-gray-400 group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+          <path d="M9 1.334C7.06.594 1.646-.84.293.653a1.158 1.158 0 0 0-.293.77v13.973c0 .193.046.383.134.55.088.167.214.306.366.403a.932.932 0 0 0 .5.147c.176 0 .348-.05.5-.147 1.059-.32 6.265.851 7.5 1.65V1.334ZM19.707.653C18.353-.84 12.94.593 11 1.333V18c1.234-.799 6.436-1.968 7.5-1.65a.931.931 0 0 0 .5.147.931.931 0 0 0 .5-.148c.152-.096.279-.235.366-.403.088-.167.134-.357.134-.55V1.423a1.158 1.158 0 0 0-.293-.77Z"/>
+  </svg>
+	<h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white group-hover:text-white">{course.Name}</h5>
+        <p class="mb-3 font-normal text-gray-500 dark:text-gray-400 group-hover:text-white">{course.Subject}</p>
+        <p class="mb-3 font-normal text-right text-gray-500 dark:text-gray-400 group-hover:text-white">Questions to be reviewed: {course.ReviewQuestions}</p>
+      </div>
+    ))}
+  </div>
+</div>
+

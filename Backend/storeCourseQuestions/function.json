@@ -1,0 +1,17 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "name": "req",
+      "direction": "in",
+      "route": "StoreCourseQuestions",
+      "methods": ["post"]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ]
+}

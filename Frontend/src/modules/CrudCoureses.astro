@@ -1,0 +1,820 @@
+---
+/* eslint max-lines: 'off' */
+import { fetchTeacherCourses } from './TeacherCourseSelector.client';
+
+let courses = [];
+
+try {
+    courses = await fetchTeacherCourses(24);//Currently Hardcoded, as login is not yet enabled
+} catch (error) {
+    console.error("Error while accessing courses:", error);
+}
+
+//Get via API CALL
+const coursesData = JSON.stringify(courses);
+---
+
+<entities-crud type="Courses">
+	<div
+		class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700"
+	>
+		<div class="w-full mb-1">
+			<div id="coursesData" style="display: none;" data-courses={coursesData}></div>
+			<div class="mb-2">
+				<nav class="flex mb-5" aria-label="Breadcrumb">
+					<ol
+						class="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2"
+					>
+						<li class="inline-flex items-center">
+							<a
+								href=".."
+								class="inline-flex items-center text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-white"
+							>
+								<svg
+									class="w-5 h-5 mr-2.5"
+									fill="currentColor"
+									viewBox="0 0 20 20"
+									xmlns="http://www.w3.org/2000/svg"
+									><path
+										d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
+									></path></svg
+								>
+								Home
+							</a>
+						</li>
+						<li>
+							<div class="flex items-center">
+								<svg
+									class="w-6 h-6 text-gray-400"
+									fill="currentColor"
+									viewBox="0 0 20 20"
+									xmlns="http://www.w3.org/2000/svg"
+									><path
+										fill-rule="evenodd"
+										d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+										clip-rule="evenodd"></path></svg
+								>
+								<span
+									class="ml-1 text-gray-400 md:ml-2 dark:text-gray-500"
+									aria-current="page">Maintain Courses</span
+								>
+							</div>
+						</li>
+					</ol>
+				</nav>
+				<h1
+					class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
+				>
+					All of your Courses
+				</h1>
+			</div>
+			<div class="items-center justify-between block sm:flex">
+				<div class="flex items-center ml-auto space-x-2 sm:space-x-3">
+					<button
+						id="createCourseButton"
+						class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+						type="button"
+						data-drawer-target="drawer-create-course-default"
+						data-drawer-show="drawer-create-course-default"
+						aria-controls="drawer-create-course-default"
+						data-drawer-placement="right"
+					>
+						<svg
+							class="w-5 h-5 mr-2 -ml-1"
+							fill="currentColor"
+							viewBox="0 0 20 20"
+							xmlns="http://www.w3.org/2000/svg"
+							><path
+								fill-rule="evenodd"
+								d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+								clip-rule="evenodd"></path></svg
+						>
+						Add Course
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="flex flex-col">
+		<div class="overflow-x-auto">
+			<div class="inline-block min-w-full align-middle">
+				<div class="overflow-hidden shadow">
+					<table
+						class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600"
+					>
+						<thead class="bg-gray-100 dark:bg-gray-700">
+							<tr>
+								<th scope="col" class="p-4">
+								</th>
+
+								{
+									[
+										'Course Name',
+										'Subject',
+										'ID',
+										'Amount of Students',
+										'Created At',
+										'Actions',
+									].map((th) => (
+										<th
+											scope="col"
+											class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400"
+										>
+											{th}
+										</th>
+									))
+								}
+							</tr>
+						</thead>
+
+						<tbody
+							class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700"
+						>
+							{
+								courses.map((course) => (
+									<tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+										<td class="w-4 p-4">
+										</td>
+										<td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+											<div class="text-base font-semibold text-gray-900 dark:text-white">
+												<data value="name">{course.Name}</data>
+											</div>
+										</td>
+										<td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+											<data value="subject">{course.Subject}</data>
+										</td>
+										<td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+											#<data value="id">{course.CourseID}</data>
+										</td>
+										<td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+											<data value="enrolled-students">{course.EnrolledStudents}</data>
+										</td>
+										<td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+											<data value="createdAt">{course.CreatedDate}</data>
+										</td>
+
+										<td class="p-4 space-x-2 whitespace-nowrap">
+											<button
+												type="button"
+												data-course-id-u={course.CourseID}
+												data-drawer-target="drawer-update-course-default"
+												data-drawer-show="drawer-update-course-default"
+												aria-controls="drawer-update-course-default"
+												data-drawer-placement="right"
+												class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+											>
+												<svg
+													class="w-4 h-4 mr-2"
+													fill="currentColor"
+													viewBox="0 0 20 20"
+													xmlns="http://www.w3.org/2000/svg"
+												>
+													<svg>
+														<path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+														<path
+															fill-rule="evenodd"
+															d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+															clip-rule="evenodd"
+														/>
+													</svg>
+												</svg>
+												Update
+											</button>
+											<button
+												type="button"
+												data-course-id-d={course.CourseID}
+												data-drawer-target="drawer-delete-course-default"
+												data-drawer-show="drawer-delete-course-default"
+												aria-controls="drawer-delete-course-default"
+												data-drawer-placement="right"
+												class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900"
+												>
+												<svg
+													class="w-4 h-4 mr-2"
+													fill="currentColor"
+													viewBox="0 0 20 20"
+													xmlns="http://www.w3.org/2000/svg"
+												>
+													<path
+														fill-rule="evenodd"
+														d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+														clip-rule="evenodd"
+													/>
+												</svg>
+												Delete Course
+											</button>
+											<button
+													id="assignStudentsToCourseButton"
+													data-course-id-a={course.CourseID}
+													class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 sm:w-auto dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-800 rounded-lg"
+												  type="button"
+													data-drawer-target="drawer-assign-students-default"
+													data-drawer-show="drawer-assign-students-default"
+													aria-controls="drawer-assign-students-default"
+													data-drawer-placement="right"
+											>
+													<svg
+													class="w-4 h-4 mr-2"
+															fill="currentColor"
+															viewBox="0 0 20 20"
+															xmlns="http://www.w3.org/2000/svg"
+													>
+													<path d="M16 0H4a2 2 0 0 0-2 2v1H1a1 1 0 0 0 0 2h1v2H1a1 1 0 0 0 0 2h1v2H1a1 1 0 0 0 0 2h1v2H1a1 1 0 0 0 0 2h1v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6ZM13.929 17H7.071a.5.5 0 0 1-.5-.5 3.935 3.935 0 1 1 7.858 0 .5.5 0 0 1-.5.5Z"/>
+												</svg>
+													Assign Students To Course
+											</button>
+										</td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Edit Course Drawer -->
+	<div
+		id="drawer-update-course-default"
+		class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800"
+		tabindex="-1"
+		aria-labelledby="drawer-label"
+		aria-hidden="true"
+	>
+		<h5
+			id="drawer-label"
+			class="inline-flex items-center mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400"
+		>
+			Update Course
+		</h5>
+		<button
+			type="button"
+			data-drawer-dismiss="drawer-update-course-default"
+			aria-controls="drawer-update-course-default"
+			class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+		>
+			<svg
+				aria-hidden="true"
+				class="w-5 h-5"
+				fill="currentColor"
+				viewBox="0 0 20 20"
+				xmlns="http://www.w3.org/2000/svg"
+				><path
+					fill-rule="evenodd"
+					d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+					clip-rule="evenodd"></path></svg
+			>
+			<span class="sr-only">Close menu</span>
+		</button>
+
+		<form onsubmit="{handleSubmitUpdateCourse}">
+			<div class="space-y-4">
+				<div>
+					<label
+						for="name"
+						class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>Course Name</label
+					>
+					<input
+						type="text"
+						name="title"
+						id="update-drawer-name"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+						placeholder="Type Course name"
+						required=""
+					/>
+				</div>
+				<div>
+					<label
+						for="price"
+						class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>Subject</label
+					>
+					<input
+						type="text"
+						name="subject"
+						id="update-drawer-subject"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+						placeholder="Type Course Subject"
+						required=""
+					/>
+				</div>
+				<div>
+					<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Course ID</label>
+					<div id="update-drawer-Id" class="text-gray-900 dark:text-white">{}</div>
+			</div>
+
+			<div>
+					<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amount of Students</label>
+					<div id="update-drawer-AmountOfStudents" class="text-gray-900 dark:text-white">{}</div>
+			</div>
+
+			<div>
+					<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Created At</label>
+					<div id="update-drawer-CreatedAt" class="text-gray-900 dark:text-white">{}</div>
+			</div>
+
+
+			</div>
+			<div
+				class="bottom-0 left-0 flex justify-center w-full pb-4 mt-4 space-x-4 sm:absolute sm:px-4 sm:mt-0"
+			>
+				<button
+					type="submit"
+					id="confirm-update-course"
+					class="w-full justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+				>
+					Update
+				</button>
+			</div>
+		</form>
+	</div>
+
+	<!-- Delete Course Drawer -->
+	<div
+		id="drawer-delete-course-default"
+		class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800"
+		tabindex="-1"
+		aria-labelledby="drawer-label"
+		aria-hidden="true"
+	>
+		<h5
+			id="drawer-label"
+			class="inline-flex items-center text-sm font-semibold text-gray-500 uppercase dark:text-gray-400"
+		>
+			Delete item
+		</h5>
+		<button
+			type="button"
+			data-drawer-dismiss="drawer-delete-course-default"
+			aria-controls="drawer-delete-course-default"
+			class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+		>
+			<svg
+				aria-hidden="true"
+				class="w-5 h-5"
+				fill="currentColor"
+				viewBox="0 0 20 20"
+				xmlns="http://www.w3.org/2000/svg"
+				><path
+					fill-rule="evenodd"
+					d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+					clip-rule="evenodd"></path></svg
+			>
+			<span class="sr-only">Close menu</span>
+		</button>
+		<svg
+			class="w-10 h-10 mt-8 mb-4 text-red-600"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+			><path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg
+		>
+		<h3 class="mb-6 text-lg text-gray-500 dark:text-gray-400">
+			Are you sure you want to delete this Course?
+		</h3>
+		<a
+			href="#"
+			id="confirmDeleteCourse"
+			class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2.5 text-center mr-2 dark:focus:ring-red-900"
+		>
+			Yes, I'm sure
+		</a>
+		<a
+			href="#"
+			class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 border border-gray-200 font-medium inline-flex items-center rounded-lg text-sm px-3 py-2.5 text-center dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+			data-modal-toggle="delete-Course-modal"
+		>
+			No, cancel
+		</a>
+	</div>
+
+	<!-- Add Course Drawer -->
+	<div
+		id="drawer-create-course-default"
+		class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800"
+		tabindex="-1"
+		aria-labelledby="drawer-label"
+		aria-hidden="true"
+	>
+		<h5
+			id="drawer-label"
+			class="inline-flex items-center mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400"
+		>
+			 Add Course
+		</h5>
+		<button
+			type="button"
+			data-drawer-dismiss="drawer-create-course-default"
+			aria-controls="drawer-create-course-default"
+			class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+		>
+			<svg
+				aria-hidden="true"
+				class="w-5 h-5"
+				fill="currentColor"
+				viewBox="0 0 20 20"
+				xmlns="http://www.w3.org/2000/svg"
+				><path
+					fill-rule="evenodd"
+					d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+					clip-rule="evenodd"></path></svg
+			>
+			<span class="sr-only">Close menu</span>
+		</button>
+		<form onsubmit="{handleSubmitAddCourse}">
+			<div class="space-y-4">
+				<div>
+					<label
+						for="name"
+						class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>Course Name</label
+					>
+					<input
+						type="text"
+						name="title"
+						id="create-drawer-name"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+						placeholder="Type Course Name"
+						required
+					/>
+				</div>
+
+				<div>
+					<label
+						for="subject"
+						class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>Subject</label
+					>
+					<input
+						type="text"
+						name="subject"
+						id="create-drawer-subject"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+						placeholder="Type Course Subject"
+						required
+					/>
+				</div>
+
+				<div
+					class="bottom-0 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute"
+				>
+					<button
+						id="confirm-create-course"
+						type="submit"
+						class="text-white w-full justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+					>
+						Add Course
+					</button>
+					<button
+						type="button"
+						data-drawer-dismiss="drawer-create-course-default"
+						aria-controls="drawer-create-course-default"
+						class="inline-flex w-full justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+					>
+						<svg
+							aria-hidden="true"
+							class="w-5 h-5 -ml-1 sm:mr-1"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+							xmlns="http://www.w3.org/2000/svg"
+							><path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M6 18L18 6M6 6l12 12"></path></svg
+						>
+						Cancel
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div
+    id="drawer-assign-students-default"
+    class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800"
+    tabindex="-1"
+    aria-labelledby="drawer-label"
+    aria-hidden="true"
+>
+	<h5
+		id="drawer-label"
+		class="inline-flex items-center mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400"
+	>
+		Assign Students
+	</h5>
+	<button
+		type="button"
+		data-drawer-dismiss="drawer-assign-students-default"
+		aria-controls="drawer-assign-students-default"
+		class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+	>
+		<svg
+			aria-hidden="true"
+			class="w-5 h-5"
+			fill="currentColor"
+			viewBox="0 0 20 20"
+			xmlns="http://www.w3.org/2000/svg"
+			><path
+				fill-rule="evenodd"
+				d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+				clip-rule="evenodd"></path></svg
+		>
+		<span class="sr-only">Close menu</span>
+	</button>
+
+	<form onsubmit="{handleSubmitAssignStudents}">
+    <div class="space-y-4">
+        <div>
+					<div>
+						<label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Coursename</label>
+						<div id="assign-students-id" class="hidden"></div>
+						<div id="assign-drawer-courseName" class="text-gray-900 dark:text-white">{}</div>
+				</div>
+						<label
+                for="students"
+                class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+                Students
+            </label>
+						<div id="studentsList" class="mt-2"></div>
+        </div>
+			<div>
+			</div>
+
+
+		</div>
+		<div
+			class="bottom-0 left-0 flex justify-center w-full pb-4 mt-4 space-x-4 sm:absolute sm:px-4 sm:mt-0"
+		>
+			<button
+				type="submit"
+				id="confirm-assign-students"
+				class="w-full justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+			>
+				Update
+			</button>
+		</div>
+	</form>
+</div>
+
+</entities-crud>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+			const coursesDataElement = document.getElementById('coursesData');
+			const courses = JSON.parse(coursesDataElement.getAttribute('data-courses'));
+			console.log(courses)
+
+			const deleteButtons = document.querySelectorAll('button[data-course-id-d]');
+    deleteButtons.forEach(button => button.addEventListener('click', function() {
+        const courseId = this.getAttribute('data-course-id-d');
+				console.log(courseId)
+        const deleteCourseDrawer = document.getElementById('drawer-delete-course-default');
+        deleteCourseDrawer.setAttribute('data-current-course-id', courseId);
+    }));
+
+		const confirmDeleteButton = document.getElementById('confirmDeleteCourse');
+    confirmDeleteButton.addEventListener('click', function() {
+        handleDeleteCourse();
+    });
+
+		const confirmUpdateButton = document.getElementById('confirm-update-course');
+    confirmUpdateButton.addEventListener('click', function() {
+        handleUpdateCourse();
+    });
+
+		const confirmAssignButton = document.getElementById('confirm-assign-students');
+    confirmAssignButton.addEventListener('click', function() {
+			handleAssignStudents();
+    });
+
+		const confirmCreateButton = document.getElementById('confirm-create-course');
+    confirmCreateButton.addEventListener('click', function() {
+        handleCreateCourse();
+    });
+
+		const assignButtons = document.querySelectorAll('button[data-course-id-a]');
+    assignButtons.forEach(button => button.addEventListener('click', function() {
+        const courseId = this.getAttribute('data-course-id-a');
+				// API CALL
+        fillAssignDrawer(courseId, courses);
+    }));
+
+		const updateButtons = document.querySelectorAll('button[data-course-id-u]');
+    updateButtons.forEach(button => button.addEventListener('click', function() {
+        const courseId = this.getAttribute('data-course-id-u');
+				console.log(courseId)
+        fillUpdateDrawer(courseId, courses);
+    }));
+});
+
+function handleDeleteCourse() {
+    const deleteCourseDrawer = document.getElementById('drawer-delete-course-default');
+    const courseId = deleteCourseDrawer.getAttribute('data-current-course-id');
+    console.log(courseId);
+
+
+    // Perform the DELETE request
+    fetch(`https://futurist-edu-functions.azurewebsites.net/api/deletecourse/${courseId}?code=yNiTKSIXtG9Y5vNdnHHSY1ooSS5sL_ziqYdOTeW9y7R5AzFuEELsqw%3D%3D`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        window.location.reload();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+
+function handleUpdateCourse() {
+
+		const dataToSend = {
+        courseId: document.getElementById('update-drawer-Id').textContent,
+        name: document.getElementById('update-drawer-name').value,
+        subject: document.getElementById('update-drawer-subject').value
+    };
+
+    fetch('https://futurist-edu-functions.azurewebsites.net/api/updatecourse?code=qu4IYg9pOJ7UpVod7KUbZeIDT0nJNAfHQvVG3FhI11ebAzFuNOR01g%3D%3D', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(data => {
+        window.location.reload();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+function handleAssignStudents() {
+    const courseId = document.getElementById('assign-students-id').textContent;
+    const checkboxes = document.querySelectorAll('#studentsList input[type="checkbox"]');
+    const enrolledStudents = [];
+
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            enrolledStudents.push(checkbox.value);
+        }
+    });
+
+    // Prepare the data to be sent
+    const dataToSend = {
+        userIds: enrolledStudents,
+        courseId: courseId
+    };
+
+    // Perform the POST request
+    fetch('https://futurist-edu-functions.azurewebsites.net/api/assignstudentstocourse?code=8YM6jzOwE3-yuXENnHoUJT48PMxGSLlMXrDihydWIcDkAzFuwucw3Q%3D%3D', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        window.location.reload();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+function handleCreateCourse() {
+    const courseName = document.getElementById('create-drawer-name').value;
+    console.log(courseName);
+    const courseSubject = document.getElementById('create-drawer-subject').value;
+    console.log(courseSubject);
+    
+    const dataToSend = {
+        name: courseName,
+        user: 24, 
+        subject: courseSubject
+    };
+
+    fetch('https://futurist-edu-functions.azurewebsites.net/api/createcourse?code=ltmfPr6icMMNow7ptLAXVFNl9IC-shLv9yQYF8JffHCXAzFu5CgoJg%3D%3D', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        window.location.reload();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+function fillUpdateDrawer(courseId, courses) {
+    const course = courses.find(c => c.CourseID == courseId);
+    if (course) {
+        document.getElementById('update-drawer-Id').textContent = course.CourseID;
+        document.getElementById('update-drawer-name').value = course.Name;
+        document.getElementById('update-drawer-subject').value = course.Subject;
+        document.getElementById('update-drawer-AmountOfStudents').textContent = course.EnrolledStudents;
+        document.getElementById('update-drawer-CreatedAt').textContent = course.CreatedDate;
+    } else {
+        console.error('No Course found for ID: ' + courseId);
+    }
+}
+
+async function fetchEnrollmentStatus(courseId) {
+    const url = `https://futurist-edu-functions.azurewebsites.net/api/getenrollmentstatus/${courseId}?code=2Gjb_xCN51B20Rp7OzzYvvF5Epsx02gC0r-IeUIKHav9AzFur0s76A%3D%3D`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const enrollmentStatus = await response.json();
+        return enrollmentStatus;
+    } catch (error) {
+        console.error('Error fetching enrollment status: ', error.message);
+        return null;
+    }
+}
+
+
+function fillAssignDrawer(courseId, courses) {
+    fetchEnrollmentStatus(courseId)
+        .then(enrollmentStatus => {
+
+					const course = courses.find(c => c.CourseID == courseId);
+						console.log(enrollmentStatus)
+            if (course) {
+
+							document.getElementById('assign-drawer-courseName').textContent = course.Name;
+								document.getElementById('assign-students-id').textContent = course.CourseID;
+                const studentsContainer = document.getElementById('studentsList');
+                studentsContainer.innerHTML = ''; 
+                enrollmentStatus.forEach(student => {
+                    const checkbox = document.createElement('input');
+              
+                checkbox.type = 'checkbox';
+                checkbox.id = 'student-' + student.UserID;
+                checkbox.value = student.UserID;
+                checkbox.checked = student.IsEnrolled == 'true';
+								checkbox.className = "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+
+                const label = document.createElement('label');
+                label.htmlFor = 'student-' + student.UserID;
+                label.textContent = student.Username;
+                label.className = 'ms-2 text-sm font-medium text-gray-900 dark:text-gray-300';
+
+                const div = document.createElement('div');
+                div.appendChild(checkbox);
+                div.appendChild(label);
+
+                studentsContainer.appendChild(div);
+							});
+            } else {
+                console.error('No Course found for ID: ' + courseId);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching enrollment status: ', error);
+        });
+}
+</script>

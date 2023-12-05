@@ -1,0 +1,291 @@
+---
+---
+
+<div class="flex flex-col items-center justify-center px-6 pt-8 mx-auto pt:mt-0 dark:bg-gray-900">
+    <div class="relative p-4 flex justify-center max-w-full h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:pt-5 sm:pb-0">
+            <!-- Modal header -->
+						<div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+							<h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+								Overview of the generated Flashcards
+								<button
+									data-popover-target="popover-description"
+									data-popover-placement="bottom-end"
+									type="button"
+									><svg
+										class="w-4 h-4 ml-2 text-gray-400 hover:text-gray-500"
+										aria-hidden="true"
+										fill="currentColor"
+										viewBox="0 0 20 20"
+										xmlns="http://www.w3.org/2000/svg"
+										><path
+											fill-rule="evenodd"
+											d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+											clip-rule="evenodd"></path></svg
+									><span class="sr-only">Show information</span></button>
+							</h3>
+							<div
+								data-popover
+								id="popover-description"
+								role="tooltip"
+								class="absolute z-10 invisible inline-block text-sm font-light text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400"
+							>
+								<div class="p-3 space-y-2">
+									<h3 class="font-semibold text-gray-900 dark:text-white">
+										Manage the AI generated Flashcards
+									</h3>
+									<p>
+										Delete Flashcards, you dont want to submit to your students. Edit Answer you dont like the phrasing of. Adjust the Question and Answer Pairs to your liking.
+									</p>
+								</div>
+							</div>
+							<button id="add-row-button" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline flex items-center justify-center transition duration-150 ease-in-out">
+								Add
+							</button>
+						</div>
+            <div class="flex flex-col justify-between items-center pb-4 mb-4 rounded-t sm:mb-5 ">
+                <form id="flashcards-form">
+                    <div class="overflow-x-auto w-full">
+                        <table class="min-w-full bg-white dark:bg-gray-700 dark:border-gray-600 rounded-md divide-y divide-gray-200 dark:divide-gray-600 rounded-b-md">
+                            <thead>
+                                <tr>
+                                    <th class="px-2 py-2 text-left text-xs font-medium text-gray-900 dark:text-white uppercase tracking-wider sm:px-6 sm:py-5">Question</th>
+                                    <th class="px-2 py-2 text-left text-xs font-medium text-gray-900 dark:text-white uppercase tracking-wider sm:px-6 sm:py-5">Answer</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-700 dark:border-gray-600 rounded-md divide-y divide-gray-200 dark:divide-gray-600 text-gray-900 dark:text-gray-400">
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-center mt-4">
+			<button id="save-flashcards-button" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline flex items-center justify-center">
+					<div id="loading-indicator" class="hidden mr-2 flex space-x-1">
+							<div class='h-1.5 w-1.5 bg-white rounded-full animate-bounce'></div>
+							<div class='h-1.5 w-1.5 bg-white rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+							<div class='h-1.5 w-1.5 bg-white rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+					</div>
+					Save Questions
+			</button>
+	</div>
+	<div id="success-message" class="hidden flex flex-col gap-3">
+	<div
+	class="flex bg-white dark:bg-gray-900 items-center px-6 py-4 text-sm border-2 rounded-b shadow-sm border-green-500 mt-10">
+	<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-green-500 stroke-current" fill="none"
+			viewBox="0 0 24 24">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+	</svg>
+	<div class="ml-3">
+			<div class="font-bold text-left text-black dark:text-gray-50">Your Questions have been saved</div>
+			<div class="w-full text-gray-900 dark:text-gray-300 mt-1">You can exit this page now.</div>
+	</div>
+	</div>
+</div>
+<div id="error-message" class="hidden flex flex-col gap-3">
+
+<div
+	class="flex bg-white dark:bg-gray-900 items-center px-6 py-4 text-sm border-2 rounded-b shadow-sm border-red-500 mt-10">
+	<svg viewBox="0 0 24 24" class="w-8 h-8 text-red-500 stroke-current" fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<path
+					d="M12 8V12V8ZM12 16H12.01H12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+					stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+	</svg>
+	<div class="ml-3">
+			<div class="font-bold text-left text-black dark:text-gray-50">Error while saving</div>
+			<div class="w-full text-gray-900 dark:text-gray-300 mt-1">The Saving Process returned with Errors.</div>
+	</div>
+</div>
+</div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+	const data = JSON.parse(decodeURIComponent(new URLSearchParams(window.location.search).get('data')));
+  const courseId = data.courseId;
+  const flashcards = data.flashcards;const tableBody = document.querySelector('#flashcards-form tbody');
+const addButton = document.getElementById('add-row-button');
+let amountOfFlashcards = 0;
+
+addButton.addEventListener('click', () => {
+        addNewRow(tableBody);
+    });
+
+		function addNewRow(tableBody) {
+    const row = document.createElement('tr');
+    const questionCell = document.createElement('td');
+    const answerCell = document.createElement('td');
+
+    questionCell.className = 'px-6 py-4 whitespace-nowrap';
+    answerCell.className = 'px-6 py-4 whitespace-nowrap';
+
+    const questionInput = document.createElement('input');
+    questionInput.type = 'text';
+		questionInput.name = `question_${amountOfFlashcards}`;
+    questionInput.placeholder = 'Enter your Question';
+    questionInput.className = 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-400 rounded-md px-2 py-1 border-none';
+
+    const answerInput = document.createElement('input');
+    answerInput.type = 'text';
+		answerInput.name = `answer_${amountOfFlashcards}`;
+    answerInput.placeholder = 'Enter your Answer';
+    answerInput.className = 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-400 rounded-md px-2 py-1 border-none';
+
+		const deleteCell = document.createElement('td');
+		deleteCell.className = 'px-6 py-4 whitespace-nowrap';
+		const deleteButton = document.createElement('button');
+		deleteButton.className = 'ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out';
+		deleteButton.textContent = 'Delete';
+
+    questionCell.appendChild(questionInput);
+    answerCell.appendChild(answerInput);
+	
+		deleteButton.addEventListener('click', function() {
+		tableBody.removeChild(row);
+		});
+		deleteCell.appendChild(deleteButton);
+
+    row.appendChild(questionCell);
+		row.appendChild(answerCell);
+		row.appendChild(deleteCell);
+
+	tableBody.appendChild(row);
+
+	amountOfFlashcards++;
+}
+
+function adjustInputWidth(input) {
+        const tempSpan = document.createElement('span');
+        tempSpan.style.position = 'absolute';
+        tempSpan.style.visibility = 'hidden';
+        tempSpan.style.height = 'auto';
+        tempSpan.style.width = 'auto';
+        tempSpan.style.whiteSpace = 'nowrap';
+        tempSpan.textContent = input.value || input.placeholder;
+
+        document.body.appendChild(tempSpan);
+
+        input.style.width = `${Math.min(tempSpan.offsetWidth + 20)}px`;
+
+        document.body.removeChild(tempSpan);
+}
+
+
+flashcards.forEach((card, index) => {
+	const row = document.createElement('tr');
+
+	const questionCell = document.createElement('td');
+	questionCell.className = 'px-6 py-4 whitespace-nowrap flex';
+	const questionInput = document.createElement('input');
+        questionInput.type = 'text';
+        questionInput.name = `question_${index}`;
+        questionInput.className = 'sm:w-full max-w-10 sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-400 rounded-md px-2 py-1 border-none overflow-hidden';
+        questionInput.style.textOverflow = 'ellipsis';
+        questionInput.style.whiteSpace = 'nowrap'; 
+        questionInput.style.overflow = 'hidden'; 
+        questionInput.value = card.question;
+	questionInput.addEventListener('input', () => adjustInputWidth(questionInput));
+  adjustInputWidth(questionInput);
+	questionCell.appendChild(questionInput);
+
+	const answerCell = document.createElement('td');
+	answerCell.className = 'px-6 py-4 whitespace-nowrap';
+	const answerInput = document.createElement('input');
+        answerInput.type = 'text';
+        answerInput.name = `answer_${index}`;
+        answerInput.className = 'sm:w-full max-w-1 sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-400 rounded-md px-2 py-1 border-none overflow-hidden';
+        answerInput.style.textOverflow = 'ellipsis';
+        answerInput.style.whiteSpace = 'nowrap';
+        answerInput.style.overflow = 'hidden';
+        answerInput.value = card.answer;
+	answerInput.addEventListener('input', () => adjustInputWidth(answerInput));
+  adjustInputWidth(answerInput); // Initial aufrufen
+	answerCell.appendChild(answerInput);
+
+	const deleteCell = document.createElement('td');
+	deleteCell.className = 'px-6 py-4 whitespace-nowrap';
+	const deleteButton = document.createElement('button');
+	deleteButton.className = 'ml-2 px-4 py-2 font-medium text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus:shadow-outline-red active:bg-red-600 transition duration-150 ease-in-out';
+	deleteButton.textContent = 'Delete';
+
+	deleteButton.addEventListener('click', function() {
+		tableBody.removeChild(row);
+	});
+	deleteCell.appendChild(deleteButton);
+
+	row.appendChild(questionCell);
+	row.appendChild(answerCell);
+	row.appendChild(deleteCell);
+
+	tableBody.appendChild(row);
+	amountOfFlashcards++;
+
+});
+
+const saveButton = document.getElementById('save-flashcards-button');
+    saveButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        saveQuestions();
+    });
+});
+
+function saveQuestions() {
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const successMessage = document.getElementById('success-message');
+    const errorMessage = document.getElementById('error-message');
+
+		const data = JSON.parse(decodeURIComponent(new URLSearchParams(window.location.search).get('data')));
+  	const courseId = data.courseId;
+		console.log(courseId)
+    
+    successMessage.classList.add('hidden');
+    errorMessage.classList.add('hidden');
+
+    loadingIndicator.classList.remove('hidden');
+
+    const questionsAndAnswers = [];
+
+    const rows = document.querySelectorAll('#flashcards-form tbody tr');
+    rows.forEach(row => {
+        const question = row.querySelector('input[name^="question"]').value;
+        const answer = row.querySelector('input[name^="answer"]').value;
+        questionsAndAnswers.push({ question, answer });
+    });
+
+    const dataToSend = {
+        courseId: courseId,
+        createdBy: "24", //Currently Hardcoded, as the login is not enbaled yet
+        questionsAndAnswers: questionsAndAnswers
+    };
+
+    fetch('https://futurist-edu-functions.azurewebsites.net/api/storecoursequestions?code=J27Ss1MYm_ImGT_53NRHc6LzFuZBzE-W9JCm_fjPaLVOAzFuPBnYrQ%3D%3D', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        successMessage.classList.remove('hidden');
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        errorMessage.classList.remove('hidden');
+    })
+    .finally(() => {
+        loadingIndicator.classList.add('hidden');
+    });
+}
+
+
+</script>

@@ -1,0 +1,21 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "route": "getTotalAnswerCountPerCourse/{courseId}/{days}",
+      "methods": ["get"],
+      "bindingData": {
+        "courseId": "{courseId}",
+        "days": "{days}"
+      }
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ]
+}

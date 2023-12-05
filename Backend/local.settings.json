@@ -1,0 +1,10 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=futuristedufunction;AccountKey=PvYwzPS2FW0kKrK67lBBIa+P5oTaL9DU93+J+gDwk2JSNSY1m/RXx+Fx+HgzfDVkkFHxRL8SYuVG+AStwzL1Eg==;EndpointSuffix=core.windows.net"
+  },
+  "Host": {
+    "CORS": "*"
+  }
+}
