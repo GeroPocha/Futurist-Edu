@@ -1,7 +1,7 @@
 
 # Futurist-Edu
 
-![Futurist-Edu Logo](./assets/Diagrams.png)  
+![Futurist-Edu Logo](./assets/felogo_rework.png)  
 
 Futurist-Edu is an innovative, AI-driven educational platform that leverages Azure AI and Azure Data Services to revolutionize the way students learn. Our goal is to make learning more efficient, interactive, and tailored to individual needs.
 
@@ -35,4 +35,4 @@ Futurist-Edu is an innovative, AI-driven educational platform that leverages Azu
 
 ## License
 
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE.md](./LICENSE.md) file for details.
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE](./LICENSE) file for details.
